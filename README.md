@@ -13,7 +13,10 @@ Leo 教練剛接手健身房的資料管理，他需要一支小工具：從 JSO
 ### Step 1：環境準備
 
 1. 確認 Node.js 版本 >= 18（建議 20）
-2. 下載作業專案：...，並打開終端機輸入：`npm install`
+2. **Fork** 本專案（https://github.com/hexschool/node-js-week1-2026）到自己的 GitHub 帳號
+   - ⚠️ 一定要用 Fork，不要下載 zip——驗收靠你自己 repo 的 GitHub Actions
+   - Fork 完先進你 repo 的 **Actions** 分頁，按一次「I understand my workflows, go ahead and enable them」
+3. `git clone` 你自己的 fork 到本機，打開終端機輸入：`npm install`
 
 ### Step 2：設定環境變數
 
@@ -60,29 +63,29 @@ npm test
 
 ## 主線任務
 
-### 【任務一：讀取會員清單】
+### 【任務一：讀取會員清單】（⭐｜20 分）
 
 * 函式：`readMembers(filePath)`
 * 用 `fs/promises` 讀取指定路徑的 JSON 檔案
 
-### 【任務二：篩選 VIP 會員】
+### 【任務二：篩選 VIP 會員】（⭐｜15 分）
 
 * 函式：`filterVIP(members)`
 * 透過陣列方法篩選，回傳 `level === 'VIP'` 的會員
 * 注意：不可修改原陣列
 
-### 【任務三：計算點數總和】
+### 【任務三：計算點數總和】（⭐｜15 分）
 
 * 函式：`sumCredits(members)`
 * 加總陣列中所有人的 `credits` 欄位
 * 空陣列回傳 `0`
 
-### 【任務四：讀取環境變數】
+### 【任務四：讀取環境變數】（⭐⭐｜20 分）
 
 * 函式：`getGymConfig()`
 * 從 `process.env` 讀取 `GYM_NAME`、`ADMIN_NAME`、`DEFAULT_MEMBERS_PATH`
 
-### 【任務五：VIP 會員統計摘要】（綜合題）
+### 【任務五：VIP 會員統計摘要】（綜合題）（⭐⭐⭐｜30 分）
 
 * 函式：`getVIPSummary(filePath)`
 * 綜合使用先前撰寫的函式，最終回傳指定格式的會員統計摘要
@@ -116,10 +119,14 @@ npm test
 
 ## 繳交方式
 
-1. 完成 index.js 中的所有函式
-2. 執行 npm test 確保所有測試通過
-3. 將程式碼上傳至 GitHub
-4. 提交 GitHub 連結
+1. 完成 `index.js` 中的五個函式
+2. 本機執行 `npm test`，確認 `Tests: 8 passed, 8 total`
+3. `git push` 到你自己的 repo
+4. 進你 repo 的 **Actions** 分頁，確認最新的 run 是綠勾勾 ✅
+   - Actions 是空的？回去按一次「enable workflows」，再 `git commit --allow-empty -m rerun && git push` 觸發
+5. 繳交：**repo 網址 + Actions 綠勾截圖**
+
+> 📏 `test.js`、`fixtures/`、`.github/` 是考卷，不可修改——繳交後會用原版抽查重跑。
 
 ---
 
@@ -127,6 +134,9 @@ npm test
 
 **Q：`npm install` 失敗？**
 A：可先確認 Node.js 版本 `node -v`，至少要 18（建議 20）。如果還是不行，刪掉 `node_modules/` 和 `package-lock.json` 後再重新執行 `npm install`
+
+**Q：push 了但 Actions 沒有任何 run？**
+A：Fork 的 repo 預設不啟用 workflows——進你 repo 的 Actions 分頁按一次啟用，再隨便 push 一個 commit 就會跑了。
 
 **Q：`.env` 的值讀不到？**
 A：這週還沒有教 `dotenv`，所以 `.env` 本機直接執行 `node app.js` 會是讀不到的。目前 Jest 測試會自己使用 `process.env.XXX`，所以 `getGymConfig` 照著規格寫就可以通過囉。
