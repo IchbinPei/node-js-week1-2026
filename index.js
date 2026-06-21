@@ -13,6 +13,16 @@ const fs = require('fs/promises');
  */
 async function readMembers(filePath) {
   // TODO: 實作此函式
+  try {
+    const text = await fs.readFile(filePath, 'utf-8');
+    return JSON.parse(text);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.log('檔案不存在，回傳空陣列');
+      return [];
+    }
+    throw error;  // 其他錯誤繼續往上丟
+  }
   // 提示：用 fs/promises 的 readFile，記得加 'utf-8'，再用 JSON.parse 轉成物件
 }
 
@@ -31,6 +41,7 @@ async function readMembers(filePath) {
  */
 function filterVIP(members) {
   // TODO: 實作此函式
+  return members.filter(member => member.level === 'VIP');
   // 提示：用 Array.prototype.filter，不要修改原陣列
 }
 
@@ -48,6 +59,11 @@ function filterVIP(members) {
 function sumCredits(members) {
   // TODO: 實作此函式
   // 提示：用 reduce，初始值給 0
+  const sumCredit = members.reduce((total, member) => {
+    return total + member.credits;
+  }, 0);
+
+  return sumCredit;
 }
 
 // ========== 任務四：讀取環境變數 ==========
@@ -70,6 +86,11 @@ function sumCredits(members) {
 function getGymConfig() {
   // TODO: 實作此函式
   // 提示：用 || 給預設值
+  return {
+    gymName: process.env.GYM_NAME || '未命名健身房',
+    adminName: process.env.ADMIN_NAME || '尚未指派',
+    defaultMembersPath: process.env.DEFAULT_MEMBERS_PATH
+  };
 }
 
 // ========== 任務五：VIP 會員統計摘要（綜合題）==========
@@ -89,9 +110,18 @@ async function getVIPSummary(filePath) {
   // TODO: 實作此函式
   // 步驟：
   //   1. 讀會員資料
+  const members = await readMembers(filePath);
   //   2. 篩出 VIP
+  const vipMembers = filterVIP(members);
   //   3. 算總點數、收集姓名
+  const totalCredits = sumCredits(vipMembers);
+  const names = vipMembers.map(member => member.name);
   //   4. 回傳 { count, totalCredits, names }
+  return {
+    count: vipMembers.length,
+    totalCredits,
+    names
+  };
 }
 
 module.exports = {
